@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='/style.min.css') }}">
+
+</head>
+<body>
+    <section class="aQuiz">
+        <div class="aQuiz__inner">
+            <form action="" id="aFormQuiz" class="quiz__form aForm">
+                <div class="aForm__inner">
+
+                    {% for item in data %}
+                        {% if (item.type == 'radio') %}
+                            <section class="aForm__box">
+
+                                <h2 class="aQuiz__title">{{ item.index }}. {{ item.question }}</h2>
+
+                                <ul class="aForm__list" style="grid-template-rows: repeat({{ item.answers_length }}, 1fr);">
+                                    {% for x in item.answers %}
+                                        <li class="aForm__item">
+                                            <label class="aForm__radio">
+                                                <input type="{{ item.type }}" name="{{ item.id }}" value="{{ x.value }}" {% if x.isOther %} data-other='true' {% endif %}>
+                                                <span>{{ x.answer }}</span>
+                                            </label>
+                                            {% if x.isOther %}
+                                                <input class="aForm__other" type="text" name="other-{{ item.id }}" placeholder="напишите ваш вариант" autocomplete="off" style="display: none">
+                                            {% endif %}
+                                        </li><!--./aForm__item-->
+                                    {% endfor %}
+                                </ul><!--./aForm__list-->
+
+                            </section><!--./aForm__box-->
+                        {% endif %}
+
+                        {% if item.type == 'checkbox' %}
+                            <section class="aForm__box">
+
+                                <h2 class="aQuiz__title">{{ item.index }}. {{ item.question }}</h2>
+
+                                <ul class="aForm__list" style="grid-template-rows: repeat({{ item.answers_length }}, 1fr);">
+                                    {% for x in item.answers %}
+                                        <li class="aForm__item">
+                                            <label class="aForm__checkbox">
+                                                <input type="{{ item.type }}" name="{{ item.id }}" value="{{ x.value }}" {% if x.isOther %} data-other='true' {% endif %}>
+                                                <span>{{ x.answer }}</span>
+                                            </label>
+                                            {% if x.isOther %}
+                                                <input class="aForm__other" type="text" name="other-{{ item.id }}" placeholder="напишите ваш вариант" autocomplete="off" style="display: none">
+                                            {% endif %}
+                                        </li><!--./aForm__item-->
+                                    {% endfor %}
+                                </ul><!--./aForm__list-->
+
+                            </section><!--./aForm__box-->
+                        {% endif %}
+
+                        {% if item.type == 'text' %}
+                            {% if item.subType == false %}
+                                <section class="aForm__box">
+
+                                    <h2 class="aQuiz__title">{{ item.index }}. {{ item.question }}</h2>
+
+                                    <div class="aForm__textarea">
+                                        <label class="visually-hidden" for="{{ item.id }}">{{ item.placeholder }}</label>
+                                        <textarea id="{{ item.id }}" name="{{ item.id }}" placeholder="{{ item.placeholder }}" autocomplete="off"></textarea>
+                                    </div><!--./aForm__list-->
+
+                                </section><!--./aForm__box-->
+                            {% else %}
+                                <section class="aForm__box">
+
+                                    <h2 class="aQuiz__title">{{ item.index }}. {{ item.question }}</h2>
+
+                                    <label class="aForm__input">
+                                        <input type="{{ item.type }}" name="{{ item.id }}" placeholder="{{ item.placeholder }}" autocomplete="off">
+                                    </label><!--./aForm__list-->
+
+                                </section><!--./aForm__box-->
+                            {% endif %}
+                        {% endif %}
+                    {% endfor %}
+
+                </div>
+
+                <button class="mForm__btn js-btn-question" style="display:none" type="submit">Отправить</button>
+            </form><!--./aForm-->
+
+        </div>
+    </section><!--./quiz-->
+
+<!--    <script defer src="{{ url_for('static', path='/main.js') }}"></script>-->
+</body>
+</html>
